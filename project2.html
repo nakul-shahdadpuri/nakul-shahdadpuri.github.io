@@ -1,189 +1,639 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Data Science Job Market Analysis</title>
+  <title>Data Science Job Market Analysis - Nakul Shahdadpuri</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="description" content="Comprehensive analysis of data science job market trends from 2020-2023, featuring interactive Tableau dashboards and insights." />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f1f1f1;
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --accent-color: #f093fb;
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f7fafc;
+      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --border-radius: 0.75rem;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #667eea);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      opacity: 0.03;
+      z-index: -1;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    /* Header Styles */
     #header {
-      background-color: #333333;
+      background: var(--bg-gradient);
       color: #ffffff;
-      padding: 20px;
+      padding: 4rem 2rem;
       text-align: center;
-      font-size: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.1);
+      z-index: 1;
+    }
+
+    #header h1 {
+      position: relative;
+      z-index: 2;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: -0.025em;
+    }
+
+    /* Navigation */
+    .nav-container {
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-weight: 600;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-color);
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    /* Content Styles */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
     }
 
     .chart-container {
-      margin: 20px auto;
-      max-width: 1000px;
-      padding: 20px;
-      background-color: #ffffff;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
+      margin: 3rem auto;
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-lg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: var(--transition);
     }
 
-    .chart-container p {
-      margin-bottom: 10px;
+    .chart-container:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
+    .chart-header {
+      background: var(--bg-gradient);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .chart-header h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .chart-header .subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .chart-content {
+      padding: 2rem;
+    }
+
+    .chart-description {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .insights-list {
+      background: var(--bg-secondary);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .insights-list h4 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .insights-list ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .insights-list li {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .insights-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    /* Tableau Container */
     .tableauPlaceholder {
       position: relative;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
     }
 
     .tableauPlaceholder noscript img {
       border: none;
+      border-radius: var(--border-radius);
     }
 
     .tableauViz {
       display: none;
     }
 
-    .interactive {
-      transition: all 0.3s ease;
+    /* Loading State */
+    .loading-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-light);
     }
 
-    .interactive:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    .loading-spinner {
+      width: 3rem;
+      height: 3rem;
+      border: 3px solid var(--bg-secondary);
+      border-top: 3px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Back to Portfolio Button */
+    .back-button {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      z-index: 1000;
+      background: var(--bg-gradient);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--text-primary);
+      color: white;
+      text-align: center;
+      padding: 3rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer h3 {
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .footer p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-color);
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+      #header h1 {
+        font-size: 2rem;
       }
-      to {
-        opacity: 1;
+
+      .nav-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .chart-container {
+        margin: 2rem 0;
+      }
+
+      .chart-content {
+        padding: 1.5rem;
+      }
+
+      .back-button {
+        position: static;
+        margin: 1rem;
+        align-self: flex-start;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 1rem;
       }
     }
 
-    .fadeInAnimation {
-      animation: fadeIn 1s ease-in-out;
+    @media screen and (max-width: 480px) {
+      .container {
+        padding: 0 1rem;
+      }
+
+      #header {
+        padding: 2rem 1rem;
+      }
+
+      .chart-header,
+      .chart-content {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Back to Portfolio Button -->
+  <a href="index.html" class="back-button">
+    ← Back to Portfolio
+  </a>
+
+  <!-- Header -->
   <div id="header">
-    <h1>Analysis of Data Science Job Market from 2020 to 2023</h1>
-  </div>
-
-  <div class="chart-container interactive fadeInAnimation">
-    <p><h2>The Average Remote Ratio by Experience Levels and Employment Modes</h2>
-
-        <p>The charts below illustrate the average remote ratio across various experience levels and employment modes. These interactive charts dynamically update based on user selections.</p>
-        
-        <p>For example, by clicking on "Part Time" in the first chart, all the part-time jobs will be selected in the second chart as well.</p>
-        
-        <p>This project aims to assist aspiring data science enthusiasts in their job search by identifying high-paying roles that offer favorable remote work benefits. The second chart provides an overview of all the jobs in the market, plotted based on salary and remote ratio.</p>
-
-        <ul>
-          <li>The charts are designed to facilitate the job search process for data science enthusiasts.</li>
-          <li>Remote work benefits are a crucial factor in the selection of high-paying roles.</li>
-          <li>Both charts dynamically update in response to user interactions.</li>
-          <li>The second chart offers a comprehensive view of the job market, considering salary and remote work options.</li>
-        </ul>
-    </p>
-    <div class="tableauPlaceholder" id="viz1685184701327">
-      <noscript>
-        <a href="#">
-          <img alt="Dashboard 3" src="https://public.tableau.com/static/images/Da/Dashboard3_16848544256370/Dashboard3/1_rss.png" style="border: none" />
-        </a>
-      </noscript>
-      <object class="tableauViz" width="1100" height="900">
-        <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
-        <param name="embed_code_version" value="3" />
-        <param name="site_root" value="" />
-        <param name="name" value="Dashboard3_16848544256370/Dashboard3" />
-        <param name="tabs" value="no" />
-        <param name="toolbar" value="yes" />
-        <param name="static_image" value="https://public.tableau.com/static/images/Da/Dashboard3_16848544256370/Dashboard3/1.png" />
-        <param name="animate_transition" value="yes" />
-        <param name="display_static_image" value="yes" />
-        <param name="display_spinner" value="yes" />
-        <param name="display_overlay" value="yes" />
-        <param name="display_count" value="yes" />
-        <param name="language" value="en-US" />
-      </object>
+    <div class="container">
+      <h1 class="fade-in">Data Science Job Market Analysis</h1>
+      <p class="subtitle fade-in">Comprehensive insights from 2020-2023 market trends</p>
     </div>
   </div>
 
-  <div class="chart-container interactive fadeInAnimation">
-    <p><h2>Salary, Company Size, and Employment Mode</h2>
-
-        <p>The following charts represent the salary of a role along with company size and mode of employment. When selecting "Entry Level" in the first chart, you can view the top Data Science jobs tagged as "Entry Level." The first chart illustrates the average salary versus experience level across various company sizes. Here are some insights we can gather from this:</p>
-        
-        <ul>
-          <li>Entry Level employees receive the highest salaries in medium-sized companies.</li>
-          <li>Executive Level employees earn the highest salaries in small startups.</li>
-          <li>The highest-paid entry-level position is the Machine Learning Scientist role.</li>
-          <li>The overall highest-paid entry-level position is the Data Science Tech Lead role.</li>
-          <li>Executive Level employees receive higher pay in contract jobs compared to full-time positions.</li>
-        </ul>
-        
-    </p>
-    <div class="tableauPlaceholder" id="viz1685184869564">
-      <noscript>
-        <a href="#">
-          <img alt="Dashboard 1" src="https://public.tableau.com/static/images/Da/Dashboard1_16848543561560/Dashboard1/1_rss.png" style="border: none" />
-        </a>
-      </noscript>
-      <object class="tableauViz" width="1100" height="900">
-        <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
-        <param name="embed_code_version" value="3" />
-        <param name="site_root" value="" />
-        <param name="name" value="Dashboard1_16848543561560/Dashboard1" />
-        <param name="tabs" value="no" />
-        <param name="toolbar" value="yes" />
-        <param name="static_image" value="https://public.tableau.com/static/images/Da/Dashboard1_16848543561560/Dashboard1/1.png" />
-        <param name="animate_transition" value="yes" />
-        <param name="display_static_image" value="yes" />
-        <param name="display_spinner" value="yes" />
-        <param name="display_overlay" value="yes" />
-        <param name="display_count" value="yes" />
-        <param name="language" value="en-US" />
-      </object>
+  <!-- Navigation -->
+  <nav class="nav-container">
+    <div class="nav-content">
+      <a href="index.html" class="nav-brand">Nakul Shahdadpuri</a>
+      <ul class="nav-links">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#salary-analysis">Salary Analysis</a></li>
+        <li><a href="#trends">Market Trends</a></li>
+        <li><a href="index.html">Portfolio</a></li>
+      </ul>
     </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <!-- Overview Section -->
+    <div id="overview" class="chart-container fade-in">
+      <div class="chart-header">
+        <h2>Remote Work & Experience Level Analysis</h2>
+        <p class="subtitle">Interactive exploration of remote work patterns across different experience levels</p>
+      </div>
+      <div class="chart-content">
+        <div class="chart-description">
+          <p>The charts below illustrate the average remote ratio across various experience levels and employment modes. These interactive dashboards dynamically update based on user selections, providing a comprehensive view of the modern data science job landscape.</p>
+        </div>
+        
+        <div class="insights-list">
+          <h4>Key Features</h4>
+          <ul>
+            <li>Interactive filtering by employment type (Full-time, Part-time, Contract)</li>
+            <li>Real-time cross-chart filtering and highlighting</li>
+            <li>Comprehensive salary vs. remote work ratio analysis</li>
+            <li>Experience level breakdown with detailed statistics</li>
+          </ul>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Loading interactive dashboard...</p>
+        </div>
+
+        <div class="tableauPlaceholder" id="viz1685184701327">
+          <noscript>
+            <a href="#">
+              <img alt="Dashboard 3" src="https://public.tableau.com/static/images/Da/Dashboard3_16848544256370/Dashboard3/1_rss.png" style="border: none" />
+            </a>
+          </noscript>
+          <object class="tableauViz" width="100%" height="900">
+            <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+            <param name="embed_code_version" value="3" />
+            <param name="site_root" value="" />
+            <param name="name" value="Dashboard3_16848544256370/Dashboard3" />
+            <param name="tabs" value="no" />
+            <param name="toolbar" value="yes" />
+            <param name="static_image" value="https://public.tableau.com/static/images/Da/Dashboard3_16848544256370/Dashboard3/1.png" />
+            <param name="animate_transition" value="yes" />
+            <param name="display_static_image" value="yes" />
+            <param name="display_spinner" value="yes" />
+            <param name="display_overlay" value="yes" />
+            <param name="display_count" value="yes" />
+            <param name="language" value="en-US" />
+          </object>
+        </div>
+      </div>
+    </div>
+
+    <!-- Salary Analysis Section -->
+    <div id="salary-analysis" class="chart-container fade-in">
+      <div class="chart-header">
+        <h2>Salary, Company Size & Employment Patterns</h2>
+        <p class="subtitle">Deep dive into compensation trends across different organizational structures</p>
+      </div>
+      <div class="chart-content">
+        <div class="chart-description">
+          <p>This comprehensive analysis reveals salary patterns across various company sizes and employment modes. The interactive visualizations allow you to explore correlations between experience level, company size, and compensation packages.</p>
+        </div>
+        
+        <div class="insights-list">
+          <h4>Key Insights Discovered</h4>
+          <ul>
+            <li>Entry-level professionals earn highest salaries in medium-sized companies</li>
+            <li>Executive-level employees command premium salaries in small startups</li>
+            <li>Machine Learning Scientists represent the highest-paid entry-level positions</li>
+            <li>Data Science Tech Leads offer the most lucrative overall entry-level opportunities</li>
+            <li>Contract positions often provide higher executive-level compensation than full-time roles</li>
+          </ul>
+        </div>
+
+        <div class="tableauPlaceholder" id="viz1685184869564">
+          <noscript>
+            <a href="#">
+              <img alt="Dashboard 1" src="https://public.tableau.com/static/images/Da/Dashboard1_16848543561560/Dashboard1/1_rss.png" style="border: none" />
+            </a>
+          </noscript>
+          <object class="tableauViz" width="100%" height="900">
+            <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+            <param name="embed_code_version" value="3" />
+            <param name="site_root" value="" />
+            <param name="name" value="Dashboard1_16848543561560/Dashboard1" />
+            <param name="tabs" value="no" />
+            <param name="toolbar" value="yes" />
+            <param name="static_image" value="https://public.tableau.com/static/images/Da/Dashboard1_16848543561560/Dashboard1/1.png" />
+            <param name="animate_transition" value="yes" />
+            <param name="display_static_image" value="yes" />
+            <param name="display_spinner" value="yes" />
+            <param name="display_overlay" value="yes" />
+            <param name="display_count" value="yes" />
+            <param name="language" value="en-US" />
+          </object>
+        </div>
+      </div>
+    </div>
+
+    <!-- Market Trends Section -->
+    <div id="trends" class="chart-container fade-in">
+      <div class="chart-header">
+        <h2>Temporal Analysis: 2020-2023 Market Evolution</h2>
+        <p class="subtitle">Understanding how the data science landscape transformed over four crucial years</p>
+      </div>
+      <div class="chart-content">
+        <div class="chart-description">
+          <p>This longitudinal analysis tracks the evolution of the data science job market from 2020 to 2023, capturing the impact of global events, technological advances, and changing work preferences on the industry.</p>
+        </div>
+        
+        <div class="insights-list">
+          <h4>Market Evolution Highlights</h4>
+          <ul>
+            <li>Consistent salary growth across all experience levels throughout the period</li>
+            <li>Notable senior-level salary dip in 2021 attributed to COVID-19 market disruption</li>
+            <li>Remote work ratio peaked during 2021-2022 pandemic period</li>
+            <li>Large and medium companies showed significant remote work policy reversals</li>
+            <li>Small startups maintained consistent remote work offerings</li>
+            <li>Premium positions: $100K+ salaries with maximum remote flexibility</li>
+          </ul>
+        </div>
+
+        <div class="tableauPlaceholder" id="viz1685184942834">
+          <noscript>
+            <a href="#">
+              <img alt="Dashboard 2" src="https://public.tableau.com/static/images/Da/Dashboard2_16848543265640/Dashboard2/1_rss.png" style="border: none" />
+            </a>
+          </noscript>
+          <object class="tableauViz" width="100%" height="900">
+            <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+            <param name="embed_code_version" value="3" />
+            <param name="site_root" value="" />
+            <param name="name" value="Dashboard2_16848543265640/Dashboard2" />
+            <param name="tabs" value="no" />
+            <param name="toolbar" value="yes" />
+            <param name="static_image" value="https://public.tableau.com/static/images/Da/Dashboard2_16848543265640/Dashboard2/1.png" />
+            <param name="animate_transition" value="yes" />
+            <param name="display_static_image" value="yes" />
+            <param name="display_spinner" value="yes" />
+            <param name="display_overlay" value="yes" />
+            <param name="display_count" value="yes" />
+            <param name="language" value="en-US" />
+          </object>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="chart-container interactive fadeInAnimation">
-    <p><h2>Data Analysis for the Time Period of 2020 to 2023</h2>
-
-        <p>The following charts analyze the data over the time period of 2020 to 2023. Salary trends have consistently increased for all experience levels during these three years. However, senior-level employees experienced a drop in salaries in the year 2021, which can be attributed to the impact of the COVID-19 pandemic.</p>
-        
-        <p>On the other hand, the average remote ratio has shown a decline with its peak occurring in 2021-2022. Large and medium-sized companies have witnessed the most significant drop in remote ratio compared to small startups.</p>
-        
-        <p>On the left-hand side, we can observe what I believe are the best roles. These roles offer salaries above $100,000 and have the highest remote ratio.</p>
-        
-    </p>
-    <div class="tableauPlaceholder" id="viz1685184942834">
-      <noscript>
-        <a href="#">
-          <img alt="Dashboard 2" src="https://public.tableau.com/static/images/Da/Dashboard2_16848543265640/Dashboard2/1_rss.png" style="border: none" />
-        </a>
-      </noscript>
-      <object class="tableauViz" width="1100" height="900">
-        <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
-        <param name="embed_code_version" value="3" />
-        <param name="site_root" value="" />
-        <param name="name" value="Dashboard2_16848543265640/Dashboard2" />
-        <param name="tabs" value="no" />
-        <param name="toolbar" value="yes" />
-        <param name="static_image" value="https://public.tableau.com/static/images/Da/Dashboard2_16848543265640/Dashboard2/1.png" />
-        <param name="animate_transition" value="yes" />
-        <param name="display_static_image" value="yes" />
-        <param name="display_spinner" value="yes" />
-        <param name="display_overlay" value="yes" />
-        <param name="display_count" value="yes" />
-        <param name="language" value="en-US" />
-      </object>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <h3>About This Analysis</h3>
+      <p>This comprehensive data science job market analysis was conducted by Nakul Shahdadpuri as part of his portfolio demonstrating advanced data visualization and analytical capabilities.</p>
+      <div class="footer-links">
+        <a href="index.html">Portfolio</a>
+        <a href="https://github.com/nakul-shahdadpuri">GitHub</a>
+        <a href="https://www.linkedin.com/in/nakul-shahdadpuri-448025179/">LinkedIn</a>
+        <a href="mailto:nakulshahdadpuri3141@gmail.com">Contact</a>
+      </div>
+      <p>&copy; 2024 Nakul Shahdadpuri. Data visualization powered by Tableau.</p>
     </div>
-  </div>
+  </footer>
 
+  <!-- Scripts -->
   <script type="text/javascript">
+    // Enhanced loading and animation effects
+    document.addEventListener('DOMContentLoaded', function() {
+      // Hide loading states when Tableau visualizations load
+      const loadingStates = document.querySelectorAll('.loading-state');
+      
+      // Fade in animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.fade-in').forEach(element => {
+        element.style.opacity = '0';
+        observer.observe(element);
+      });
+
+      // Smooth scrolling for navigation
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Tableau visualization loading
+      setTimeout(() => {
+        loadingStates.forEach(state => {
+          state.style.display = 'none';
+        });
+      }, 3000);
+    });
+
+    // Tableau scripts
     var scriptElement1 = document.createElement('script');
     scriptElement1.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
     var vizElement1 = document.getElementById('viz1685184701327');

@@ -1,5 +1,490 @@
 @import url("fontawesome-all.min.css");
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/*
+	Enhanced Strata Portfolio by Nakul Shahdadpuri
+	Modern Data Science Portfolio with Enhanced Aesthetics
+	Built on HTML5 UP Strata Template with Custom Enhancements
+*/
+
+/* Modern CSS Variables for Consistent Design */
+:root {
+	--primary-color: #667eea;
+	--secondary-color: #764ba2;
+	--accent-color: #f093fb;
+	--text-primary: #2d3748;
+	--text-secondary: #4a5568;
+	--text-light: #718096;
+	--bg-primary: #ffffff;
+	--bg-secondary: #f7fafc;
+	--bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	--shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	--border-radius: 0.75rem;
+	--transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth Scrolling */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Loading Animation */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes gradientShift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+	0%, 100% { transform: scale(1); }
+	50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+	0%, 100% { transform: translateY(0px); }
+	50% { transform: translateY(-10px); }
+}
+
+/* Enhanced Typography */
+.enhanced-typography {
+	font-family: 'Inter', sans-serif;
+	line-height: 1.6;
+	letter-spacing: -0.025em;
+}
+
+.code-font {
+	font-family: 'JetBrains Mono', monospace;
+}
+
+/* Modern Glassmorphism Effect */
+.glass-effect {
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: var(--border-radius);
+}
+
+/* Gradient Text Effect */
+.gradient-text {
+	background: var(--bg-gradient);
+	background-size: 200% 200%;
+	animation: gradientShift 3s ease infinite;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* Modern Button Enhancements */
+.modern-button {
+	background: var(--bg-gradient);
+	background-size: 200% 200%;
+	border: none;
+	border-radius: var(--border-radius);
+	color: white;
+	padding: 0.75rem 1.5rem;
+	font-weight: 500;
+	text-decoration: none;
+	display: inline-block;
+	transition: var(--transition);
+	box-shadow: var(--shadow-md);
+	position: relative;
+	overflow: hidden;
+}
+
+.modern-button::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+	transition: left 0.5s;
+}
+
+.modern-button:hover::before {
+	left: 100%;
+}
+
+.modern-button:hover {
+	animation: gradientShift 1s ease infinite;
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-lg);
+}
+
+/* Enhanced Card Design */
+.modern-card {
+	background: var(--bg-primary);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow-sm);
+	transition: var(--transition);
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+}
+
+.modern-card:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--shadow-lg);
+}
+
+/* Skill Tags */
+.skill-tag {
+	display: inline-block;
+	background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+	color: white;
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	margin: 0.25rem;
+	transition: var(--transition);
+}
+
+.skill-tag:hover {
+	transform: scale(1.05);
+	animation: pulse 1s infinite;
+}
+
+/* Progress Bars */
+.progress-bar {
+	width: 100%;
+	height: 8px;
+	background: #e2e8f0;
+	border-radius: 4px;
+	overflow: hidden;
+	margin: 0.5rem 0;
+}
+
+.progress-fill {
+	height: 100%;
+	background: var(--bg-gradient);
+	border-radius: 4px;
+	transition: width 2s ease-in-out;
+	animation: gradientShift 3s ease infinite;
+	background-size: 200% 200%;
+}
+
+/* Floating Elements */
+.floating-element {
+	animation: float 3s ease-in-out infinite;
+}
+
+/* Modern Section Dividers */
+.section-divider {
+	height: 2px;
+	background: var(--bg-gradient);
+	margin: 3rem 0;
+	border-radius: 1px;
+	background-size: 200% 200%;
+	animation: gradientShift 3s ease infinite;
+}
+
+/* Quick Stats */
+.quick-stats {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 1.5rem;
+}
+
+.stat-item {
+	text-align: center;
+}
+
+.stat-number {
+	display: block;
+	font-size: 1.5rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.stat-label {
+	display: block;
+	font-size: 0.75rem;
+	color: var(--text-light);
+	margin-top: 0.25rem;
+}
+
+/* Skills Grid */
+.skills-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 2rem;
+	margin: 2rem 0;
+}
+
+.skill-category {
+	padding: 2rem;
+}
+
+.skill-category h3 {
+	color: var(--text-primary);
+	margin-bottom: 1.5rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.skill-category i {
+	color: var(--primary-color);
+}
+
+.skill-item {
+	margin-bottom: 1rem;
+}
+
+.skill-item span {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
+	color: var(--text-secondary);
+}
+
+/* Project Enhancements */
+.work-item {
+	margin-bottom: 2rem;
+	position: relative;
+}
+
+.project-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(102, 126, 234, 0.9);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: var(--transition);
+	border-radius: var(--border-radius);
+}
+
+.work-item:hover .project-overlay {
+	opacity: 1;
+}
+
+.project-info {
+	text-align: center;
+	color: white;
+}
+
+.project-info h4 {
+	margin: 0;
+	font-size: 1.2rem;
+	font-weight: 600;
+}
+
+.project-info p {
+	margin: 0.5rem 0 0 0;
+	font-size: 0.9rem;
+}
+
+.project-content {
+	padding: 1.5rem;
+}
+
+.project-tags {
+	margin-top: 1rem;
+}
+
+/* Contact Styles */
+.contact-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+	margin: 2rem 0;
+}
+
+.contact-info, .contact-form {
+	padding: 2rem;
+}
+
+.contact-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.contact-item i {
+	color: var(--primary-color);
+	font-size: 1.2rem;
+	margin-top: 0.25rem;
+}
+
+.contact-item strong {
+	display: block;
+	color: var(--text-primary);
+	margin-bottom: 0.25rem;
+}
+
+.contact-item p {
+	margin: 0;
+	color: var(--text-secondary);
+}
+
+.social-links {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+}
+
+.social-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	background: var(--bg-gradient);
+	color: white;
+	border-radius: 50%;
+	text-decoration: none;
+	transition: var(--transition);
+	font-size: 1.2rem;
+}
+
+.social-link:hover {
+	transform: translateY(-3px) scale(1.1);
+	box-shadow: var(--shadow-lg);
+}
+
+/* Modern Form Styles */
+.modern-form .form-group {
+	margin-bottom: 1.5rem;
+}
+
+.modern-form input,
+.modern-form textarea {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 2px solid #e2e8f0;
+	border-radius: var(--border-radius);
+	font-family: inherit;
+	font-size: 1rem;
+	transition: var(--transition);
+	background: var(--bg-primary);
+}
+
+.modern-form input:focus,
+.modern-form textarea:focus {
+	outline: none;
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.full-width {
+	width: 100%;
+}
+
+/* Outline Button */
+.outline-button {
+	background: transparent;
+	border: 2px solid var(--primary-color);
+	color: var(--primary-color);
+	padding: 0.75rem 1.5rem;
+	border-radius: var(--border-radius);
+	text-decoration: none;
+	font-weight: 500;
+	transition: var(--transition);
+	display: inline-block;
+}
+
+.outline-button:hover {
+	background: var(--primary-color);
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-md);
+}
+
+/* Footer Enhancements */
+.footer-content {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 2rem;
+	margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+	color: var(--text-primary);
+	margin-bottom: 1rem;
+}
+
+.footer-links {
+	list-style: none;
+	padding: 0;
+}
+
+.footer-links li {
+	margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+	color: var(--text-secondary);
+	text-decoration: none;
+	transition: var(--transition);
+}
+
+.footer-links a:hover {
+	color: var(--primary-color);
+}
+
+.footer-bottom {
+	text-align: center;
+	padding-top: 2rem;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	color: var(--text-light);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 980px) {
+	.skills-grid {
+		grid-template-columns: 1fr;
+	}
+	
+	.contact-grid {
+		grid-template-columns: 1fr;
+	}
+	
+	.quick-stats {
+		flex-direction: column;
+		gap: 1rem;
+		text-align: center;
+	}
+	
+	.footer-content {
+		grid-template-columns: 1fr;
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 736px) {
+	.social-links {
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+	
+	.skill-category {
+		padding: 1.5rem;
+	}
+	
+	.contact-info, .contact-form {
+		padding: 1.5rem;
+	}
+}
 
 /*
 	Strata by HTML5 UP
