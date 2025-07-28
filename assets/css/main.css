@@ -3704,3 +3704,48 @@ input, select, textarea {
 			}
 
 	}
+
+/* Enhanced Experience Section Styles */
+.experience-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+	margin-top: 2rem;
+}
+
+.experience-item, .education-item, .publication-item {
+	transition: var(--transition);
+}
+
+.experience-item:hover, .education-item:hover, .publication-item:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-lg);
+}
+
+.experience-item ul {
+	margin: 0.5rem 0 0 0;
+	padding-left: 1.2rem;
+}
+
+.experience-item li {
+	margin-bottom: 0.3rem;
+	color: var(--text-secondary);
+}
+
+/* Responsive Experience Grid */
+@media screen and (max-width: 980px) {
+	.experience-grid {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+}
+
+@media screen and (max-width: 736px) {
+	.experience-grid {
+		gap: 1rem;
+	}
+	
+	.experience-item, .education-item {
+		padding: 1rem !important;
+	}
+}
